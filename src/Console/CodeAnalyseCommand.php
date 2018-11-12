@@ -71,7 +71,9 @@ final class CodeAnalyseCommand extends Command
 
         $process = Process::fromShellCommandline($this->cmd(), $cwd);
 
-        if (Process::isTtySupported()) {
+        $isTtySupported = (bool) @proc_open('echo 1 >/dev/null', array(array('file', '/dev/tty', 'r'), array('file', '/dev/tty', 'w'), array('file', '/dev/tty', 'w')), $pipes);
+
+        if ($isTtySupported) {
             $process->setTty(! $this->option('no-tty'));
         }
 
